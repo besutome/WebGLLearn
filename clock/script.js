@@ -25,8 +25,7 @@
             height: height
         };
         const MATERIAL_PARAMETER = {
-            color: 0xff9933,
-            specular: 0xffffff
+            color: 'navy',
         };
 
         let scene = new THREE.Scene();
@@ -49,14 +48,8 @@
 
         const geometry = new THREE.CircleGeometry(2, 500);
         const material = new THREE.MeshLambertMaterial(MATERIAL_PARAMETER);
-        // material = new THREE.MeshPhongMaterial(MATERIAL_PARAMETER);
         const circle = new THREE.Mesh(geometry, material);
         scene.add(circle);
-
-        const hourHandGeo = new THREE.ConeGeometry(0.1, 2, 500);
-        const hourHand = new THREE.Mesh(hourHandGeo, material);
-        hourHand.position.set(0, 1.01, 0);
-        scene.add(hourHand);
 
         let directional = new THREE.DirectionalLight(0xffffff);
         directional.position.set(0, 0, 1).normalize();
@@ -64,17 +57,44 @@
         scene.add(directional);
         scene.add(ambient);
 
+        const hourHandLen = 1
+        const hourHandGeo = new THREE.CubeGeometry(hourHandLen, 0.1, 0.1);
+        const hourHandMat = new THREE.MeshNormalMaterial();
+        const hourHand = new THREE.Object3D();
+        const hourHandMesh = new THREE.Mesh(hourHandGeo, hourHandMat);
+        hourHandMesh.position.x = hourHandLen / 2;
+        hourHand.add(hourHandMesh);
+        scene.add(hourHand);
+
+        const minHandLen = 1.5
+        const minHandGeo = new THREE.CubeGeometry(minHandLen, 0.1, 0.1);
+        const minHandMat = new THREE.MeshNormalMaterial();
+        const minHand = new THREE.Object3D();
+        const minHandMesh = new THREE.Mesh(minHandGeo, minHandMat);
+        minHandMesh.position.x = minHandLen / 2;
+        minHand.add(minHandMesh);
+        scene.add(minHand);
+
+        const secHandLen = 2
+        const secHandGeo = new THREE.CubeGeometry(secHandLen, 0.1, 0.1);
+        const secHandMat = new THREE.MeshNormalMaterial();
+        const secHand = new THREE.Object3D();
+        const secHandMesh = new THREE.Mesh(secHandGeo, secHandMat);
+        secHandMesh.position.x = secHandLen / 2;
+        secHand.add(secHandMesh);
+        scene.add(secHand);
+
         let count = 0;
         render();
         function render() {
-            count++;
-            let s = Math.sin(count * 0.05);
-            let c = Math.cos(count * 0.05);
-            // circle.position.x = c;
-            // circle.position.z = s;
-            // circle.rotation.x += 0.01;
-            // circle.rotation.y += 0.01;
             renderer.render(scene, camera);
+            let s = Math.sin(-count * 0.01);
+            let c = Math.cos(-count * 0.01);
+            hourHand.rotation.z += -0.008;
+            minHand.rotation.z += -0.01;
+            secHand.rotation.z += -0.015;
+
+            count++;
             if (run) { requestAnimationFrame(render); }
         }
     }, false);
