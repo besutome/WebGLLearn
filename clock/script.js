@@ -96,9 +96,9 @@
         render();
         function render() {
             renderer.render(scene, camera);
-            hourHand.rotation.z += -0.00175 / 60 / 60;
-            minHand.rotation.z += -0.00175 / 60;
-            secHand.rotation.z += -0.00175;
+            hourHand.rotation.z += -0.00173 / 720;
+            minHand.rotation.z += -0.00173 / 60;
+            secHand.rotation.z += -0.00173;
 
             if (run) { requestAnimationFrame(render); }
         }
