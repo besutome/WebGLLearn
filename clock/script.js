@@ -57,44 +57,49 @@
         scene.add(directional);
         scene.add(ambient);
 
-        const hourHandLen = 1
-        const hourHandGeo = new THREE.CubeGeometry(hourHandLen, 0.1, 0.1);
+        const hourHandLen = 1;
+        const hourHandGeo = new THREE.CubeGeometry(0.1, hourHandLen, 0.1);
         const hourHandMat = new THREE.MeshNormalMaterial();
         const hourHand = new THREE.Object3D();
         const hourHandMesh = new THREE.Mesh(hourHandGeo, hourHandMat);
-        hourHandMesh.position.x = hourHandLen / 2;
+        hourHandMesh.position.y = hourHandLen / 2;
         hourHand.add(hourHandMesh);
         scene.add(hourHand);
 
-        const minHandLen = 1.5
-        const minHandGeo = new THREE.CubeGeometry(minHandLen, 0.1, 0.1);
+        const minHandLen = 1.5;
+        const minHandGeo = new THREE.CubeGeometry(0.1, minHandLen, 0.1);
         const minHandMat = new THREE.MeshNormalMaterial();
         const minHand = new THREE.Object3D();
         const minHandMesh = new THREE.Mesh(minHandGeo, minHandMat);
-        minHandMesh.position.x = minHandLen / 2;
+        minHandMesh.position.y = minHandLen / 2;
         minHand.add(minHandMesh);
         scene.add(minHand);
 
-        const secHandLen = 2
-        const secHandGeo = new THREE.CubeGeometry(secHandLen, 0.1, 0.1);
+        const secHandLen = 2;
+        const secHandGeo = new THREE.CubeGeometry(0.1, secHandLen, 0.1);
         const secHandMat = new THREE.MeshNormalMaterial();
         const secHand = new THREE.Object3D();
         const secHandMesh = new THREE.Mesh(secHandGeo, secHandMat);
-        secHandMesh.position.x = secHandLen / 2;
+        secHandMesh.position.y = secHandLen / 2;
+
         secHand.add(secHandMesh);
         scene.add(secHand);
 
-        let count = 0;
+        const date = new Date();
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        let seconds = date.getSeconds();
+        hourHand.rotation.z = hours > 12 ? -hours * (6.265 / 24) : -hours * (6.265 / 12);
+        minHand.rotation.z = -minutes * (6.265 / 60);
+        secHand.rotation.z = -seconds * (6.265 / 60);
+
         render();
         function render() {
             renderer.render(scene, camera);
-            let s = Math.sin(-count * 0.01);
-            let c = Math.cos(-count * 0.01);
-            hourHand.rotation.z += -0.008;
-            minHand.rotation.z += -0.01;
-            secHand.rotation.z += -0.015;
+            hourHand.rotation.z += -0.00175 / 60 / 60;
+            minHand.rotation.z += -0.00175 / 60;
+            secHand.rotation.z += -0.00175;
 
-            count++;
             if (run) { requestAnimationFrame(render); }
         }
     }, false);
